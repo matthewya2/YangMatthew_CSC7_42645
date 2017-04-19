@@ -19,7 +19,7 @@ class MM{
         
     public:
         int Rand(){
-            return rand()%8+1;   
+            return rand()%10;   
         };
 };
 

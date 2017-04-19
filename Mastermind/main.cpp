@@ -25,63 +25,91 @@ int main(int argc, char** argv) {
     int choice1,choice2,choice3,choice4;
     srand(time(0));
     cout<<"MASTERMIND!!!"<<endl;
-    bool again=false;               //play again?
+    bool again=true;               //play again?
     MM menu;
-    int picks[8];
+    int picks[4];
     int rightNP=0;                  //right number and place
     int rightN=0;                   //right number but not place
-    const int MAXTURN=10;           //max turn value
-    cout <<"For this MasterMind game, the computer will select 4 unique numbers 1-8 "<<endl<<
-            "and you must guess which numbers they are, and what order those"<<endl<<
-            "numbers are in within 10 turns."<<endl;
+    const int MAXTURN=15;           //max turn value
+    char buffer;
     
-    do{                                 
+    
+    
+    
+    cout <<"For this MasterMind game, the computer will select 4 unique numbers 0-9 "<<endl<<
+            "and you must guess which numbers they are, and what order those"<<endl<<
+            "numbers are in within 15 turns."<<endl;
+    
+    do{      
         for(int i=0;i<=3;i++){          //makes random code for user to break
             picks[i]=menu.Rand();
         }
-        
-        for(int i=0;i<=3;i++){ 
-            while (picks[i]==picks[1]){     //makes the code contain unique numerals
-            picks[i]=menu.Rand();}
-
-            while (picks[i]==picks[2]){
-            picks[i]=menu.Rand();}
-
-            while (picks[i]==picks[3]){
-            picks[i]=menu.Rand();}
-        }
+        for(int turnC=1;turnC<=MAXTURN;turnC++){
+            
         
         for(int i=0;i<=3;i++){
         cout<<picks[i];
         }
         cout<<endl;
-        for(int turnC=1;turnC<=MAXTURN;turnC++){
+        
     cout << "what numbers do you want to guess?"<<endl;
     cin>>choice;
+    
+    while (choice>9999 ){
+        cout << "please input 4 numbers only"<<endl;
+        cin>>choice;
+    } 
+    
+//    for (int i=0;i<4;i++){
+//        
+//    }
+    
     choice4=choice%10;
-    choice3=(choice%100-choice1);
-    choice2=choice%1000-(choice1+choice2);
-    choice1=choice-(choice1+choice2+choice3);
-    cout <<choice1<<choice2<<choice3<<choice4<<endl;
-        if(choice1==picks[0]){rightNP++;}
-        if(choice2==picks[1]){rightNP++;}
-        if(choice3==picks[2]){rightNP++;}
-        if(choice4==picks[3]){rightNP++;}
+    choice3=((choice%100-choice4))/10;
+    choice2=(choice%1000-(choice4+choice3))/100;
+    choice1=(choice-(choice4+choice3+choice2))/1000;
+    cout <<choice1<<" "<<choice2<<" "<<choice3<<" "<<choice4<<endl;
+      
+    
+    
+    
+    if(choice1==picks[0]){rightNP++;}
+    if(choice2==picks[1]){rightNP++;}
+    if(choice3==picks[2]){rightNP++;}
+    if(choice4==picks[3]){rightNP++;}
     
     for(int j=0;j<4;j++){
             
-        if (choice1==picks[j]){rightN++;}
-        if (choice2==picks[j]){rightN++;}
-        if (choice3==picks[j]){rightN++;}
-        if (choice4==picks[j]){rightN++;}
+        if (choice1==picks[j]){rightN++;continue;}
+        if (choice2==picks[j]){rightN++;continue;}
+        if (choice3==picks[j]){rightN++;continue;}
+        if (choice4==picks[j]){rightN++;continue;}
         }
     cout <<"you have "<<rightNP<<" right numbers in the right place."<<endl;
     cout <<"you have "<<rightN<<" right numbers in the wrong place."<<endl;
-    cout <<"you have "<<MAXTURN-turnC<<" turns left"<<endl;
-                    
-                    
-                    
-                    
+    if (rightNP<4){
+        cout <<"you have "<<MAXTURN-turnC<<" turns left"<<endl;
+    }   
+         
+    if (rightNP==4){                    //asks if you would like to play again
+        cout << "You have won!"<<endl<<
+                "turns it took to achieve victory:"<<turnC<<endl<<
+                "Play Again? (y/n)"<<endl;
+        
+        cin >>buffer;
+        if (buffer=='y'){
+            turnC=MAXTURN;
+        }
+        if (buffer=='n'){
+            again=false;
+            turnC=MAXTURN;
+        }
+        else{
+            turnC=MAXTURN;
+        }
+    }
+    rightNP=0;
+    rightN=0;
         }   
     }while (again==true);
     return 0;
